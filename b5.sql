@@ -1,0 +1,28 @@
+CREATE DATABASE IF NOT EXISTS bai5;
+USE bai5;
+
+-- Bảng khách hàng
+CREATE TABLE CUSTOMERS (
+    CustomerID INT PRIMARY KEY,
+    FullName VARCHAR(100) NOT NULL
+);
+
+-- Bảng ví
+CREATE TABLE WALLETS (
+    WalletID INT PRIMARY KEY,
+    CustomerID INT NOT NULL UNIQUE,
+    Balance DECIMAL(12,2) NOT NULL DEFAULT 0,
+    FOREIGN KEY (CustomerID) REFERENCES CUSTOMERS(CustomerID),
+    CHECK (Balance >= 0)
+);
+
+-- Bảng giao dịch
+CREATE TABLE TRANSACTIONS (
+    TransactionID INT PRIMARY KEY,
+    WalletID INT NOT NULL,
+    TransactionType VARCHAR(20) NOT NULL,
+    Amount DECIMAL(12,2) NOT NULL,
+    TransactionDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (WalletID) REFERENCES WALLETS(WalletID),
+    CHECK (Amount > 0)
+);
